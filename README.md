@@ -1,0 +1,2 @@
+# omapankki
+Ohjelmistokehityksen perusteet harjoitustyö
