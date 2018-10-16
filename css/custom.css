@@ -1,0 +1,268 @@
+body {
+  height:100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f2f2f2;
+}
+
+.navbar {
+   background-color:#fff;
+   border:0;
+   border-bottom:1px #E6E6E6 solid;
+}
+
+button.navbar-toggle {
+background-color:#333;
+border:1px #333 solid;
+}
+
+a.navbar-brand, a.navbar-brand:hover {
+   color:#888 !important;
+   padding-left:20px;
+}
+
+a.navbar-brand b {
+   color:#666;
+}
+
+.navbar-right a.logout {
+   color:#ff6666 !important;
+   padding-right:5px !important;
+}
+
+.navbar-right a.logout .glyphicon {
+   padding-left:5px;
+}
+
+.btn-settings {
+   border:1px #555 solid !important;
+   background-color:#555 !important;
+}
+
+.row.content {
+   margin-top:10px;
+}
+
+/* Front page's login form */
+
+.login-form {
+   width:400px;
+   margin:0 auto;
+   margin-top:5%;
+}
+
+.login-form .error-msq-base {
+   width:100%;
+   height:55px;
+   margin-bottom:20px;
+}
+
+.login-form .panel .panel-heading {
+   background-color:#666;
+   color:#fff;
+   font-size:18px;
+}
+
+.login-form .login-btn-group {
+   width:100%;
+   margin:0 !important;
+}
+
+/* Front page's login form */
+
+.give-keycode-txt {
+   text-align:center;
+   padding-bottom:15px;
+}
+
+.give-keycode-txt b {
+   color:#0099FF;
+}
+
+.out-of-keycodes {
+   text-align:center;
+   padding-bottom:15px;
+}
+
+.out-of-keycodes b, b.key-code-x {
+   color:red;
+}
+
+.card-type {
+   text-transform: uppercase;
+}
+
+.debit-card {
+   color:#00CC99 !important;
+}
+
+.credit-card {
+   color:#FF6666 !important;
+}
+
+.card-body {
+   background-color:#fff;
+   border:1px #E6E6E6 solid;
+   border-radius:5px;
+   padding:5px 10px 5px 10px;
+   margin-bottom: 30px;
+   text-align:left;
+}
+
+.card-title {
+   color:#666;
+}
+
+.input-group {
+   margin-bottom:20px !important;
+}
+
+#new-transaction .input-group-addon {
+    min-width:135px !important;// if you want width please write here //
+    text-align:left;
+}
+
+.login-btn, .login-btn:hover, .confirm-key-code-btn, .confirm-key-code-btn:hover, .back-btn, .back-btn:hover {
+   color:#fff;
+   background-color:#0099FF;
+   border:1px #0099FF solid;
+   padding:10px 0 10px 0;
+}
+
+.abort-function-btn, .abort-function-btn:hover {
+   color:#fff;
+   background-color:#666;
+   border:1px #666 solid;
+   padding:10px 0 10px 0;
+}
+
+.custom-list-element {
+   width:100%;
+   min-height:25px;
+   overflow:hidden;
+   border-bottom:1px #F0F0F0 solid;
+   padding:10px 0 10px 0;
+}
+
+.custom-list-element.last {
+   border-bottom:0px #F0F0F0 solid;
+}
+
+.custom-list-element .badge-col {
+   min-height:25px;
+   overflow:hidden;
+   text-align:left;
+   padding:20px 0 10px 10px;
+}
+
+.custom-list-element .badge-col .custom-badge {
+   border-radius: 50%;
+   color:#fff;
+   background-color: #555;
+   width:10px;
+   height:10px;
+   padding:10px 14px 10px 14px;
+}
+
+.custom-list-element .account-info-col {
+   padding:0;
+}
+
+.custom-list-element .account-info-col h5 {
+   color:#666;
+}
+
+.custom-list-element .account-info-col p {
+   line-height:6px;
+   font-size:12px;
+   color:#CCC;
+}
+
+.custom-list-element .transactions-btn-col {
+   text-align:right;
+   padding:10px 10px 0 0;
+   margin:0;
+}
+
+.custom-list-element .transactions-btn-col .btn {
+   color:#fff;
+   background-color:#0099FF;
+   border:1px #0099FF solid;
+   padding:10px 0 10px 0;
+   margin: 0 0 10px 0;
+}
+
+.navbar-brand:hover{
+   color:#888;
+}
+
+.btn-group-vertical {
+   width:100%;
+}
+
+.left.sidenav {
+   padding:0 20px 0 20px;
+}
+
+.right.sidenav {
+   padding:0 20px 0 15px;
+}
+
+.sidenav-button {
+   text-align:left;
+   margin-bottom:5px;
+   border:1px #555 solid;
+   border-radius:4px !important;
+   background-color:#555;
+   padding-top:10px;
+   padding-bottom:10px;
+}
+
+.sidenav-button:hover {
+   background-color: #0099FF !important;
+   border:1px #0099FF solid !important;
+}
+
+.badge-custom {
+   float:right;
+   margin-top:2px;
+   background-color: #0099FF !important;
+   color:#fff !important;
+}
+
+.btn-group-vertical .glyphicon-log-in, .glyphicon-plus {
+   float:right;
+   margin-top:2px;
+   padding-right:5px;
+}
+
+.btn-group-vertical {
+   width:100%;
+   margin-bottom:30px;
+}
+
+.btn-new-payment, .btn-new-payment:hover {
+   background-color:#00CC99;
+   border:1px #00CC99 solid;
+   padding-top:10px;
+   padding-bottom:10px;
+   color:#fff;
+}
+
+.btn-logout, .btn-logout:hover {
+   background-color:#FF6666;
+   border:1px #FF6666 solid;
+   padding-top:10px;
+   padding-bottom:10px;
+   color:#fff;
+}
+
+#footer {
+   text-align:center;
+   color:#999;
+   font-size:13px;
+   margin-top:10px;
+}

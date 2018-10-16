@@ -1,0 +1,60 @@
+
+@media (min-width: 576px) {
+
+}
+
+@media (max-width: 430px) {
+.login-form {
+   width: 100% !important;
+}
+}
+
+@media (min-width: 768px) {
+
+}
+
+@media (max-width: 768px) {
+   .main-content-area {
+      width:95%;
+      margin: 0 auto;
+   }
+   .badge-col {
+      text-align: left;
+      float:left;
+      width:15% !important;
+      padding-left:0px !important;
+      padding-top:25px !important;
+      padding-bottom:20px !important;
+   }
+   .account-info-col{
+      text-align: left;
+      float:right;
+      width:85% !important;
+      margin-bottom:5px;
+   }
+   .transactions-btn-col {
+      margin-top: 60px !important;
+      width:100% !important;
+   }
+}
+
+
+@media (min-width: 992px) {
+
+}
+
+
+@media (min-width: 1200px) {
+.container-fluid {
+   width:1200px !important;
+}
+}
+
+/* On small screens, set height to 'auto' for sidenav and grid */
+@media screen and (max-width: 767px) {
+  .sidenav {
+    height: auto;
+    padding: 15px;
+  }
+  .row.content {height:auto;}
+}
