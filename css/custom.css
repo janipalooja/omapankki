@@ -37,6 +37,19 @@ a.navbar-brand b {
    padding-left:5px;
 }
 
+.navbar-collapse, .navbar-collapse ul {
+   border:0px !important;
+}
+
+.navbar-collapse a {
+   color:#555 !important;
+}
+
+.mobile-dropdown {
+   visibility: hidden;
+   display: none;
+}
+
 .btn-settings {
    border:1px #555 solid !important;
    background-color:#555 !important;
@@ -139,6 +152,11 @@ a.navbar-brand b {
    padding:10px 0 10px 0;
 }
 
+.mobile-acout-info {
+   visibility: hidden;
+   display: none;
+}
+
 .custom-list-element {
    width:100%;
    min-height:25px;
@@ -234,9 +252,7 @@ a.navbar-brand b {
 }
 
 .btn-group-vertical .glyphicon-log-in, .glyphicon-plus {
-   float:right;
-   margin-top:2px;
-   padding-right:5px;
+
 }
 
 .btn-group-vertical {
@@ -244,9 +260,9 @@ a.navbar-brand b {
    margin-bottom:30px;
 }
 
-.btn-new-payment, .btn-new-payment:hover {
-   background-color:#00CC99;
-   border:1px #00CC99 solid;
+.btn-new-payment, .btn-new-payment:hover, .btn-pay-e-invoice {
+   background-color:#00CC99 !important;
+   border:1px #00CC99 solid !important;
    padding-top:10px;
    padding-bottom:10px;
    color:#fff;
@@ -258,6 +274,19 @@ a.navbar-brand b {
    padding-top:10px;
    padding-bottom:10px;
    color:#fff;
+}
+
+#mobile-tab-bar  {
+   visibility: hidden;
+   display: none;
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+}
+
+#mobile-tab-bar .active {
+   background-color:#0099FF !important;
 }
 
 #footer {

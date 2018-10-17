@@ -36,6 +36,26 @@
       margin-top: 60px !important;
       width:100% !important;
    }
+   .left.sidenav{
+      visibility: hidden;
+      display: none;
+   }
+   #mobile-tab-bar {
+      visibility: visible;
+      display: block;
+   }
+   .right.sidenav {
+      visibility: hidden;
+      display: none;
+   }
+   .mobile-acout-info {
+      visibility: visible;
+      display: block;
+   }
+   .mobile-dropdown {
+      visibility: visible;
+      display: block;
+   }
 }
 
 

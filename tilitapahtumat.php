@@ -1,3 +1,4 @@
+<?php require_once('php/check-login-state.php'); ?>
 <?php define('Tilitapahtumat', TRUE); ?>
 <?php require_once('php/get_transactions.php'); ?>
 
@@ -21,6 +22,17 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title" style="font-size:16px;">Tilitapahtumat</h4>
+
+          <?php require_once('php/get_account_data.php'); ?>
+             <?php foreach($result as $row): ?>
+             <div class="card mobile-acout-info" style="margin-top:20px;">
+               <div class="card-body" style="background-color: #0099FF;color:#fff;">
+                 <p style="font-size:16px;"><?= $row['TilinNimi'] ?></p>
+                 <p style="font-size:13px;"><?= chunk_split($row['Tilinumero'], 4, ' ') ?></p>
+                 <p style="font-size:13px;">Saldo: <b style="float:right;"><?= number_format($row['Saldo'], 2, ',', ' ') ?> €</b></p>
+               </div>
+             </div>
+             <?php endforeach ?>
 
          <ul class="nav nav-tabs" style="margin-bottom:10px;">
           <li class="active"><a data-toggle="tab" href="#menot">Menot</a></li>
@@ -76,13 +88,14 @@
 
         </div>
       </div>
-      <?php require_once('template/footer.php'); ?>
     </div>
 
     <?php require_once('template/right_sidebar.php'); ?>
 
   </div>
 </div>
+
+<?php require_once('template/mobile-tab-bar.php'); ?>
 
 </body>
 </html>

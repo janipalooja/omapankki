@@ -1,13 +1,12 @@
+<?php require_once('php/check-login-state.php'); ?>
 <?php define('Tilitapahtumat', TRUE); ?>
 <?php require_once('php/get_transaction_data.php'); ?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Tilitapahtumat - OmaPankki</title>
-
-  <?php require_once('template/head.php'); ?>
-
+<title>Tapahtuman tiedot - OmaPankki</title>
+<?php require_once('template/head.php'); ?>
 </head>
 <body>
 
@@ -42,11 +41,11 @@
              <div class="col-sm-6">
                <div><span style="font-weight: bold;">Maksun saaja</span></div>
                <div><span style="text-transform: uppercase;color:#666;"><?= $result[0]['SaajanNimi'] ?></span></div>
-               <div><span style="text-transform: uppercase;color:#666;"><?= $result[0]['Tilinumero'] ?></span></div>
+               <div><span style="text-transform: uppercase;color:#666;"><?= chunk_split($result[0]['Tilinumero'], 4, ' ') ?></span></div>
              </div>
              <div class="col-sm-6" style="text-align:right;">
                 <div><span style="font-weight: bold;">Viitenumero</span></div>
-               <div><span style="text-transform: uppercase;color:#666;"><?= $result[0]['Viitenumero'] ?></span></div>
+               <div><span style="text-transform: uppercase;color:#666;"><?= chunk_split($result[0]['Viitenumero'], 4, ' ') ?></span></div>
              </div>
           </div>
           <div class="row" style="margin-bottom:20px;">
@@ -62,13 +61,14 @@
 
         </div>
       </div>
-      <?php require_once('template/footer.php'); ?>
     </div>
 
     <?php require_once('template/right_sidebar.php'); ?>
 
   </div>
 </div>
+
+<?php require_once('template/mobile-tab-bar.php'); ?>
 
 </body>
 </html>

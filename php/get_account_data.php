@@ -1,11 +1,17 @@
 <?php
-require_once('db_connection.php');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-$sql = $conn->prepare("SELECT * FROM Tilit WHERE idTili = :idTili");
-$sql->execute(array('idTili' => $_GET["tili"]));
+if(isset($_SESSION["idAsiakas"])){
+   include('db_connection.php');
 
-$result = $sql->fetchAll(\PDO::FETCH_ASSOC);
+   $sql = $conn->prepare("SELECT * FROM Tilit WHERE idTili = :idTili");
+   $sql->execute(array('idTili' => $_GET["tili"]));
 
-$conn = null;
+   $result = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+   $conn = null;
+}
 
 ?>

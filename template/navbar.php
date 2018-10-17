@@ -11,18 +11,18 @@
         <span class="icon-bar"></span>
       </button>
       <?php endif ?>
-      <a class="navbar-brand" href="#">Oma<b>Pankki</b></a>
+      <a href="index.php" class="navbar-brand" href="#">Oma<b>Pankki</b></a>
     </div>
 
     <div class="collapse navbar-collapse" id="myNavbar">
-      <!--
-      <ul class="nav navbar-nav">
-         <li><a href="">Tilit ja Kortit</a></li>
-         <li><a href="">E-Laskut</a></li>
-         <li><a href="">Omat tiedot</a></li>
-         <li><a href="">Viestit</a></li>
+      <?php if(!$noMobileNavbar): ?>
+      <ul class="nav navbar-nav mobile-dropdown">
+         <li><a href="tilit-ja-kortit.php">Tilit ja Kortit</a></li>
+         <li><a href="e-laskut.php">E-Laskut</a></li>
+         <li><a href="omat-tiedot.php">Omat tiedot</a></li>
+         <li><a href="viestit.php">Viestit</a></li>
       </ul>
-      -->
+      <?php endif ?>
       <?php if(!$noMobileNavbar): ?>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="?logout=true" class="logout">Kirjaudu ulos <span class="glyphicon glyphicon-log-in"></span></a></li>

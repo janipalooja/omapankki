@@ -1,7 +1,11 @@
 <?php
-require_once('db_connection.php');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 if(isset($_GET['tili']) && isset($_SESSION['idAsiakas'])){
+   require_once('db_connection.php');
+
    // Ensimmäisenä haetaan tietokannasta valitun tilin tilinumero, jota käytetään tietojen hakuun Tilitapahtumat-taulusta, joissa maksuvirta on ollut käyttäjän tilille (tilille tuleva raha)
    $bankAccountNumber = $conn->prepare("SELECT Tilinumero FROM Tilit JOIN Tili_Asiakas ON Tilit.idTili = Tili_Asiakas.idTili WHERE Tilit.idTili = :idTili AND Tili_Asiakas.idAsiakas = :idAsiakas");
    $bankAccountNumber->execute(array('idTili' => $_GET["tili"], 'idAsiakas' => $_SESSION["idAsiakas"]));

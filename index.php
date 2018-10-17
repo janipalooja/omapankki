@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (isset($_SESSION['idAsiakas'])){
+   header("Location: tilit-ja-kortit.php");
+   die();
+}
+?>
 <?php require_once('php/login.php'); ?>
 
 <!DOCTYPE html>

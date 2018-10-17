@@ -1,60 +1,6 @@
 <?php
 require_once('db_connection.php');
-
-function secure_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
-}
-
-function bankAccountBalance($idAsiakas_, $idTili_){
-   include('db_connection.php');
-   $sql = $conn->prepare("SELECT Saldo FROM Tilit JOIN Tili_Asiakas ON Tilit.idTili = Tili_Asiakas.idTili WHERE  Tili_Asiakas.idAsiakas = :idAsiakas AND Tili_Asiakas.idTili = :idTili");
-   $sql->execute(array('idAsiakas' => $idAsiakas_, 'idTili' => $idTili_));
-
-   $result = $sql->fetchAll(\PDO::FETCH_ASSOC);
-
-   foreach($result as $row){
-      $balance = $row['Saldo'];
-   }
-
-   return (isset($balance)) ? $balance : '';
-
-   $conn = NULL;
-}
-
-function updateBankAccountBalance($summa_, $tililta_, $tilille_){
-   include('db_connection.php');
-   $summa_ = str_replace(",", ".", $summa_);
-   $sql1 = $conn->prepare("UPDATE Tilit SET Saldo = Saldo - :summa WHERE idTili = :tililta");
-   $sql1->execute(array('summa' => $summa_, 'tililta' => $tililta_));
-
-   $sql2 = $conn->prepare("UPDATE Tilit SET Saldo = Saldo + :summa WHERE Tilinumero = :tilille");
-   $sql2->execute(array('summa' => $summa_, 'tilille' => $tilille_));
-   $conn = NULL;
-}
-
-function createNewTransaction($saajanNimi_, $summa_, $tilinumero_, $pvm_, $viesti_, $viitenumero_, $maksaja_, $tililta_){
-   include('db_connection.php');
-   $summa_ = str_replace(",", ".", $summa_);
-   $stmt = $conn->prepare("INSERT INTO Tilitapahtumat (SaajanNimi, Summa, Tilinumero, TapahtumanPvm, Viesti, Viitenumero, idMaksaja, idTili)
-   VALUES (:saajanNimi, :summa, :tilinumero, :tapahtumanPvm, :viesti, :viitenumero, :maksaja, :tililta)");
-
-   $stmt->bindParam(':saajanNimi', $saajanNimi_);
-   $stmt->bindParam(':summa', $summa_);
-   $stmt->bindParam(':tilinumero', $tilinumero_);
-   $stmt->bindParam(':tapahtumanPvm', $pvm_);
-   $stmt->bindParam(':viesti', $viesti_);
-   $stmt->bindParam(':viitenumero', $viitenumero_);
-   $stmt->bindParam(':maksaja', $maksaja_);
-   $stmt->bindParam(':tililta', $tililta_);
-
-   // insert a row
-   $stmt->execute();
-
-   $conn = NULL;
-}
+require_once('functions.php');
 
 function clearForm(){
    unset($_SESSION['tililta']);
@@ -154,9 +100,9 @@ if(isset($_POST['clear-form'])){
 
       // Tarkistetaan, että kaikki tiedot on annettu
       $required = array(
-         $omalta_tililta,
-         $omalle_tilille,
-         $summa
+         $_POST["omalta_tililta"],
+         $_POST["omalle_tilille"],
+         $_POST["summa"]
       );
       for($i = 0; $i < count($required); $i++){
          // Jos joku vaadituista tiedoista puuttuu
@@ -167,13 +113,18 @@ if(isset($_POST['clear-form'])){
       }
 
       // Tarkistetaan, että veloitettava tili ei ole sama kuin maksun vastaanottava tili
-      if($omalta_tililta == $omalle_tilille){
+      include('db_connection.php');
+      $sql = $conn->prepare("SELECT Tilinumero FROM Tilit JOIN Tili_Asiakas ON Tilit.idTili = Tili_Asiakas.idTili WHERE Tilit.idTili = :idTili AND Tili_Asiakas.idAsiakas = :idAsiakas");
+      $sql->execute(array('idTili' => $omalta_tililta, 'idAsiakas' => $_SESSION['idAsiakas']));
+      $result = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+      if(!$transactionFailed && $result[0]['Tilinumero'] == $omalle_tilille){
          $transactionFailed = TRUE;
          $errorMessage = "Tarkista tilit.";
       }
 
       // Tarkistaan, että veloitettavalla tilillä riittää katetta
-      if(bankAccountBalance($_SESSION['idAsiakas'], $omalta_tililta) < $summa){
+      if(!$transactionFailed && bankAccountBalance($_SESSION['idAsiakas'], $omalta_tililta) < $summa){
          $transactionFailed = TRUE;
          $errorMessage = "Tilin saldo ei riitä.";
       }
@@ -190,7 +141,7 @@ if(isset($_POST['clear-form'])){
          // Päivitetään tilien saldot
          updateBankAccountBalance($summa, $omalta_tililta, $omalle_tilille);
          // Luodaan uusi tilitapahtuma
-         createNewTransaction($nimi, $summa, $omalle_tilille, date("Y-m-d h:i:s"), $viesti, NULL, $_SESSION['idAsiakas'], $omalta_tililta);
+         addNewOwnTransaction($nimi, $summa, $omalle_tilille, date("Y-m-d h:i:s"), $viesti, NULL, $_SESSION['idAsiakas'], $omalta_tililta);
       }
 
    }

@@ -1,9 +1,5 @@
 <?php
 
-session_start();
-require_once('db_connection.php');
-
-// Function to get the client IP address
 function get_client_ip() {
     $ipaddress = '';
     if (getenv('HTTP_CLIENT_IP'))
@@ -23,27 +19,20 @@ function get_client_ip() {
     return $ipaddress;
 }
 
-try {
-      $conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-      // prepare sql and bind parameters
-      $saveAuthInfo = $conn->prepare("INSERT INTO Kirjautumiset (IPosoite, Aika, idAsiakas)
-      VALUES (:ip, :aika, :kirjautuja)");
+if(isset($_SESSION['idAsiakas'])){
+   include('db_connection.php');
+   $saveAuthInfo = $conn->prepare("INSERT INTO Kirjautumiset (IPosoite, Aika, idAsiakas)
+   VALUES (:ip, :aika, :kirjautuja)");
 
-      $saveAuthInfo->bindParam(':ip', get_client_ip());
-      $saveAuthInfo->bindParam(':aika', date("Y-m-d H:m:s"));
-      $saveAuthInfo->bindParam(':kirjautuja', $_SESSION['idAsiakas']);
+   $saveAuthInfo->bindParam(':ip', get_client_ip());
+   $saveAuthInfo->bindParam(':aika', date("Y-m-d H:m:s"));
+   $saveAuthInfo->bindParam(':kirjautuja', $_SESSION['idAsiakas']);
 
-      // insert a row
-      $saveAuthInfo->execute();
-
-   }
-catch(PDOException $e)
-   {
-   echo $saveAuthInfo . "<br>" . $e->getMessage();
-   }
-
-    $conn = NULL;
+   $saveAuthInfo->execute();
+}
 
 ?>

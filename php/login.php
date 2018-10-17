@@ -53,10 +53,9 @@ if(isset($_POST['submit-login']) && $_SERVER["REQUEST_METHOD"] == "POST"){
                // Ja tallennetaan asiakkaan id-numero $_SESSION muuttujaan, jota käytetään asiakkaan yksilöimiseksi
                // Tietoa käytetään jatkossa mm- kaikissa käyttäjän tietoihin liittyvissä SQL- kyselyissä käyttäjän yksilöimiseksi
                $_SESSION['idAsiakas'] = $user['idAsiakas'];
-               // Suljetaan tietokanta yhteys
-               $conn = NULL;
 
-               // ### require_once('save-auth-data.php'); ## TÄÄLLÄ ON JOKU VIRHE!! ###
+               // Tallennetaan kirjautumisen tiedot
+               require_once('save-auth-data.php');
 
                // Mikäli käyttäjän syöttämä käyttäjätunnus ja salasana vastaavat tietokantaan talletettuja tunnuksia
                // ohjataan käyttäjä avainluku-sivulle, jota käytetään toisena varmennus- / tunnistusmenetelmänä.

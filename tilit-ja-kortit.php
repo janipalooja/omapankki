@@ -1,3 +1,4 @@
+<?php require_once('php/check-login-state.php'); ?>
 <?php define('TilitJaKortit', TRUE); ?>
 <?php require_once('php/get_bank_accounts.php'); ?>
 
@@ -49,9 +50,9 @@
         <div class="card-body">
           <h4 class="card-title">Kortit</h4>
 
-          <!-- Get Bank Accounts -->
+          <!-- Get Cards -->
           <?php $i = 1; foreach($result as $row): ?>
-             <!-- Custom list element for bank accounts -->
+             <!-- Custom list element for cards -->
             <div class="custom-list-element <?= ($i == count($result)) ? last:notLast ?>">
                <div class="col-sm-2 badge-col">
                   <span class="custom-badge"><?= $i; ?></span>
@@ -61,10 +62,12 @@
 
                   <?php
                   if($row['KortinTyyppi'] == "debit"){
-                     echo "<p>Liitetty tiliin: ID$row[idTili]</p>";
+                     echo "<p>Kortin numero: $row[KortinNro]</p>";
                   }
                   else {
+                     $kaytettavissa = $row['Luottoraja'] - $row['Luottosaldo'];
                      echo "<p>Luottoraja: $row[Luottoraja] €</p>";
+                     echo "<p>Käytettävissä $kaytettavissa €</p>";
                   }
                   ?>
 
@@ -73,25 +76,26 @@
                <div class="col-sm-4 transactions-btn-col">
                   <div class="btn-group btn-group-justified">
                      <?php if($row['KortinTyyppi'] == "credit"): ?>
-                    <a href="#" class="btn btn-primary">Tapahtumat</a>
+                    <a href="luottokortin-tapahtumat.php?idKortti=<?= $row['idKortti']; ?>" class="btn btn-primary">Tapahtumat</a>
                     <?php endif ?>
                     <a href="#" class="btn btn-settings" title="Muuta kortin asetuksia">Asetukset</a>
                   </div>
                </div>
             </div>
-            <!-- Custom list element for bank accounts -->
+            <!-- Custom list element for cards -->
           <?php $i++; endforeach ?>
-          <!-- Get Bank Accounts -->
+          <!-- Get Cards -->
 
         </div>
       </div>
-      <?php require_once('template/footer.php'); ?>
     </div>
 
     <?php require_once('template/right_sidebar.php'); ?>
 
   </div>
 </div>
+
+<?php require_once('template/mobile-tab-bar.php'); ?>
 
 </body>
 </html>

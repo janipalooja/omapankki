@@ -1,3 +1,4 @@
+<?php require_once('php/check-login-state.php'); ?>
 <?php require_once('php/check_key_code.php'); ?>
 <?php require_once('php/logout.php'); ?>
 

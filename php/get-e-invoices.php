@@ -1,15 +1,20 @@
 <?php
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-require_once('db_connection.php');
+if(isset($_SESSION['idAsiakas'])){
+   require_once('db_connection.php');
 
-   $unpaid = $conn->prepare("SELECT * FROM E_Laskut WHERE idAsiakas = :idAsiakas AND MaksettuPvm IS NULL ORDER BY SaapumisPvm DESC");
-   $unpaid->execute(array('idAsiakas' => $_SESSION['idAsiakas']));
+      $unpaid = $conn->prepare("SELECT * FROM E_Laskut WHERE idAsiakas = :idAsiakas AND MaksettuPvm IS NULL ORDER BY SaapumisPvm DESC");
+      $unpaid->execute(array('idAsiakas' => $_SESSION['idAsiakas']));
 
-   $unpaidE_Invoices = $unpaid->fetchAll(\PDO::FETCH_ASSOC);
+      $unpaidE_Invoices = $unpaid->fetchAll(\PDO::FETCH_ASSOC);
 
-   $paid = $conn->prepare("SELECT * FROM E_Laskut WHERE idAsiakas = :idAsiakas AND MaksettuPvm IS NOT NULL ORDER BY MaksettuPvm DESC");
-   $paid->execute(array('idAsiakas' => $_SESSION['idAsiakas']));
+      $paid = $conn->prepare("SELECT * FROM E_Laskut WHERE idAsiakas = :idAsiakas AND MaksettuPvm IS NOT NULL ORDER BY MaksettuPvm DESC");
+      $paid->execute(array('idAsiakas' => $_SESSION['idAsiakas']));
 
-   $paidE_Invoices = $paid->fetchAll(\PDO::FETCH_ASSOC);
+      $paidE_Invoices = $paid->fetchAll(\PDO::FETCH_ASSOC);
+}
 
 ?>

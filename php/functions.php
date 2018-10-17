@@ -1,4 +1,11 @@
 <?php
+function secure_input($data) {
+  $data = trim($data);
+  $data = stripslashes($data);
+  $data = htmlspecialchars($data);
+  return $data;
+}
+
 function randFreeKeyCode($paluuArvo){
    include('db_connection.php');
    // Haetaan tietokannasta kaikki käyttäjän avainlukulistat ja niissä olevat ”turvatunnukset”
@@ -17,6 +24,22 @@ function randFreeKeyCode($paluuArvo){
    return $result[$random]['idAvainlukulista'];
    else if($paluuArvo == 'avainlukujaJaljella')
    return $keyCodesLeft;
+}
+
+function bankAccountBalance($idAsiakas_, $idTili_){
+   include('db_connection.php');
+   $sql = $conn->prepare("SELECT Saldo FROM Tilit JOIN Tili_Asiakas ON Tilit.idTili = Tili_Asiakas.idTili WHERE  Tili_Asiakas.idAsiakas = :idAsiakas AND Tili_Asiakas.idTili = :idTili");
+   $sql->execute(array('idAsiakas' => $idAsiakas_, 'idTili' => $idTili_));
+
+   $result = $sql->fetchAll(\PDO::FETCH_ASSOC);
+
+   foreach($result as $row){
+      $balance = $row['Saldo'];
+   }
+
+   return (isset($balance)) ? $balance : '';
+
+   $conn = NULL;
 }
 
 function updateBankAccountBalance($summa_, $tililta_, $tilille_){
@@ -69,6 +92,17 @@ function addNewTransaction(){
 
    updateBankAccountBalance($summa, $_SESSION['tililta'], $tilinumero);
 
+   if(isset($_SESSION['idELasku'])){
+
+      $sql = "UPDATE E_Laskut SET MaksettuPvm = :erapaiva WHERE idELasku = :idELasku AND MaksettuPvm IS NULL AND idAsiakas = :idAsiakas";
+      $stmt = $conn->prepare($sql);
+      $stmt->bindParam(':erapaiva', $_SESSION['erapaiva']);
+      $stmt->bindParam(':idELasku', $_SESSION['idELasku']);
+      $stmt->bindParam(':idAsiakas', $_SESSION['idAsiakas']);
+
+      $stmt->execute();
+   }
+
    unset($_SESSION['tililta']);
    unset($_SESSION['saajanNimi']);
    unset($_SESSION['summa']);
@@ -76,18 +110,28 @@ function addNewTransaction(){
    unset($_SESSION['erapaiva']);
    unset($_SESSION['viesti']);
    unset($_SESSION['viitenumero']);
-
-   if(isset($_SESSION['idELasku'])){
-
-      $sql = "UPDATE E_Laskut SET MaksettuPvm = '2018-10-14' WHERE idELasku = :idELasku AND MaksettuPvm IS NULL AND idAsiakas = :idAsiakas";
-      $stmt = $conn->prepare($sql);
-      $stmt->bindParam(':idELasku', $_SESSION['idELasku']);
-      $stmt->bindParam(':idAsiakas', $_SESSION['idAsiakas']);
-
-      $stmt->execute();
-   }
-
    unset($_SESSION['idELasku']);
+}
+
+function addNewOwnTransaction($saajanNimi_, $summa_, $tilinumero_, $pvm_, $viesti_, $viitenumero_, $maksaja_, $tililta_){
+   include('db_connection.php');
+   $summa_ = str_replace(",", ".", $summa_);
+   $stmt = $conn->prepare("INSERT INTO Tilitapahtumat (SaajanNimi, Summa, Tilinumero, TapahtumanPvm, Viesti, Viitenumero, idMaksaja, idTili)
+   VALUES (:saajanNimi, :summa, :tilinumero, :tapahtumanPvm, :viesti, :viitenumero, :maksaja, :tililta)");
+
+   $stmt->bindParam(':saajanNimi', $saajanNimi_);
+   $stmt->bindParam(':summa', $summa_);
+   $stmt->bindParam(':tilinumero', $tilinumero_);
+   $stmt->bindParam(':tapahtumanPvm', $pvm_);
+   $stmt->bindParam(':viesti', $viesti_);
+   $stmt->bindParam(':viitenumero', $viitenumero_);
+   $stmt->bindParam(':maksaja', $maksaja_);
+   $stmt->bindParam(':tililta', $tililta_);
+
+   // insert a row
+   $stmt->execute();
+
+   $conn = NULL;
 }
 
 ?>

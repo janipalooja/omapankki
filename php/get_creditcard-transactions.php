@@ -1,17 +1,14 @@
 <?php
-require_once('db_connection.php');
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-$bankAccountNumber = $conn->prepare("SELECT Tilinumero FROM Tilit WHERE idTili = :idTili");
-$bankAccountNumber->execute(array('idTili' => $_GET["tili"]));
-$tilinumero = $bankAccountNumber->fetchAll(\PDO::FETCH_ASSOC);
+if(isset($_SESSION["idAsiakas"])){
+   require_once('db_connection.php');
 
-$transactionsOUT = $conn->prepare("SELECT * FROM Tilitapahtumat WHERE idTili = :idTili ORDER BY TapahtumanPvm DESC");
-$transactionsOUT->execute(array('idTili' => $_GET["tili"]));
-$out = $transactionsOUT->fetchAll(\PDO::FETCH_ASSOC);
-
-$transactionsIN = $conn->prepare("SELECT Tilitapahtumat.idTilitapahtuma, CONCAT(Asiakkaat.Etunimi, ' ', Asiakkaat.Sukunimi) AS MaksajanNimi, Tilitapahtumat.TapahtumanPvm, Tilitapahtumat.Summa FROM Tilitapahtumat JOIN Asiakkaat ON Tilitapahtumat.idMaksaja = Asiakkaat.idAsiakas WHERE Tilinumero = :maksettuTilille AND idMaksaja != :tarkasteltavanTilinOmistaja OR Tilinumero = :maksettuTilille AND idMaksaja = :tarkasteltavanTilinOmistaja ORDER BY TapahtumanPvm DESC");
-$transactionsIN->execute(array('tarkasteltavanTilinOmistaja' => $_SESSION['idAsiakas'], 'maksettuTilille' => $tilinumero[0]['Tilinumero']));
-$in = $transactionsIN->fetchAll(\PDO::FETCH_ASSOC);
-
+   $sql = $conn->prepare("SELECT Luottokorttitapahtumat.TapahtumaPvm AS Pvm, Luottokorttitapahtumat.Selite AS Selite, Luottokorttitapahtumat.Summa AS Summa, Kortit.KortinNimi AS KortinNimi FROM Luottokorttitapahtumat JOIN Kortit ON Luottokorttitapahtumat.idKortti = Kortit.idKortti WHERE Luottokorttitapahtumat.idKortti = :idKortti AND Kortit.idAsiakas = :idAsiakas");
+   $sql->execute(array('idKortti' => $_GET["idKortti"], 'idAsiakas' => $_SESSION["idAsiakas"]));
+   $result = $sql->fetchAll(\PDO::FETCH_ASSOC);
+}
 
 ?>

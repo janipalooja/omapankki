@@ -1,14 +1,22 @@
 
 <div class="col-sm-3 right sidenav">
 
-<?php if(defined('TilitJaKortit') || defined('E_Laskut')): ?>
+<?php if(defined('TilitJaKortit') || defined('E_Laskut') || defined('Luottokorttitapahtumat') || defined('OmatTiedot') || defined('Viestit')): ?>
 <?php require_once('php/get_userdata.php'); ?>
    <?php foreach($result as $row): ?>
    <div class="card">
      <div class="card-body" style="background-color:#0099FF;border:1px #0099FF solid;">
        <h5 class="card-title" style="font-size:12px;color:#fff;"><i>Tervetuloa</i></h5>
        <p style="font-size:28px;text-align:right;color:#fff;"><?= $row['Etunimi'] ?> <?= $row['Sukunimi'] ?></p>
-       <span style="font-size:11px;"><i>Edellinen kirjautuminen 03.10.2018 klo 00.15</i></span>
+       <?php require_once('php/last-login.php'); ?>
+       <?php if(isset($result[0]['Aika'])){$lastLoginDate = date("d.m.Y", strtotime($result[0]['Aika'])); }?>
+       <?php $lastLoginTime = date("H.m", strtotime($result[0]['Aika'])); ?>
+       <?php if($result[0]['Aika']): ?>
+          <span style="font-size:11px;"><i>Edellinen kirjautuminen <?= $lastLoginDate ?> klo <?= $lastLoginTime ?></i></span>
+       <?php endif ?>
+       <?php if(!$result[0]['Aika']): ?>
+          <span style="font-size:11px;"><i>Tervetuloa ensimmäistä kertaa!</i></span>
+       <?php endif ?>
      </div>
    </div>
    <?php endforeach ?>
